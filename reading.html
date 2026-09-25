@@ -11,6 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <script src="reading.js" defer></script>
+  <script src="disclosure.js" defer></script>
 </head>
 <body class="reading-page">
   <a class="skip-link" href="#main">Skip to reading</a>
@@ -20,9 +21,9 @@
   </header>
   <main id="main" class="reading-room">
     <section class="reading-intro">
-      <p class="eyebrow">The Rogue Rose Reading Room</p>
-      <h1>What follows you into the dark?</h1>
-      <p>Ask what is weighing on you, choose a spread, and let the cards form a story. You can also leave the question blank for an open reading.</p>
+      <p class="eyebrow">Your Current Main-Character Moment</p>
+      <h1>What have you been overthinking lately?</h1>
+      <p>Ask the question taking up too much space in your head, choose a spread, and see what story the cards tell. No question? That works too—let the deck choose the conversation.</p>
     </section>
 
     <section class="reading-panel" aria-labelledby="reading-form-title">
@@ -34,7 +35,7 @@
       <label class="question-field">Your question <span>(optional)</span>
         <textarea id="tarot-question" maxlength="300" rows="3" placeholder="What should I understand right now?"></textarea>
       </label>
-      <button id="draw-cards" class="button button-primary draw-button" type="button">Shuffle &amp; reveal</button>
+      <button id="draw-cards" class="button button-primary draw-button" type="button">Shuffle the deck</button>
       <p id="reading-status" class="reading-status" role="status" aria-live="polite"></p>
       <div id="card-table" class="card-table" aria-live="polite"></div>
       <article id="ai-reading" class="ai-reading" aria-live="polite" hidden>
