@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="A personal AI-guided tarot reading from Rogue Rose Creative.">
+  <meta name="theme-color" content="#110c10">
+  <title>Tarot Reading | Rogue Rose Creative</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="reading.js" defer></script>
+</head>
+<body class="reading-page">
+  <a class="skip-link" href="#main">Skip to reading</a>
+  <header class="site-header reading-header">
+    <a class="brand" href="index.html" aria-label="Rogue Rose Creative home"><img src="assets/rogue-rose-logo.png" alt="Rogue Rose Creative LLC"></a>
+    <a class="text-link" href="index.html">← Return home</a>
+  </header>
+  <main id="main" class="reading-room">
+    <section class="reading-intro">
+      <p class="eyebrow">The Rogue Rose Reading Room</p>
+      <h1>What follows you into the dark?</h1>
+      <p>Ask what is weighing on you, choose a spread, and let the cards form a story. You can also leave the question blank for an open reading.</p>
+    </section>
+
+    <section class="reading-panel" aria-labelledby="reading-form-title">
+      <h2 id="reading-form-title" class="sr-only">Choose your reading</h2>
+      <div class="reading-controls" role="group" aria-label="Choose a tarot spread">
+        <button class="spread-button active" data-count="1" type="button" aria-pressed="true">One card</button>
+        <button class="spread-button" data-count="3" type="button" aria-pressed="false">Past · Present · Future</button>
+      </div>
+      <label class="question-field">Your question <span>(optional)</span>
+        <textarea id="tarot-question" maxlength="300" rows="3" placeholder="What should I understand right now?"></textarea>
+      </label>
+      <button id="draw-cards" class="button button-primary draw-button" type="button">Shuffle &amp; reveal</button>
+      <p id="reading-status" class="reading-status" role="status" aria-live="polite"></p>
+      <div id="card-table" class="card-table" aria-live="polite"></div>
+      <article id="ai-reading" class="ai-reading" aria-live="polite" hidden>
+        <p class="eyebrow">Your interpretation</p>
+        <div id="ai-reading-text" class="ai-reading-text"></div>
+      </article>
+      <div id="reading-actions" class="reading-actions" hidden>
+        <button id="new-reading" class="button" type="button">Begin another reading</button>
+      </div>
+      <p class="reading-note">For entertainment and personal reflection only—not medical, legal, financial, or mental-health advice. The future is not fixed, and your choices remain your own.</p>
+    </section>
+  </main>
+  <footer class="site-footer"><div><p class="footer-name">Rogue Rose Creative LLC</p><p>Tarot · Curiosities · Original Goods</p></div><p>© <span id="year"></span> Rogue Rose Creative LLC.</p></footer>
+</body>
+</html>
