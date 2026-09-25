@@ -1,4 +1,7 @@
-const allowedCards = new Set(['The Fool','The Magician','The High Priestess','The Empress','The Emperor','The Hierophant','The Lovers','The Chariot','Strength','The Hermit','Wheel of Fortune','Justice','The Hanged One','Death','Temperance','The Devil','The Tower','The Star','The Moon','The Sun','Judgement','The World']);
+const majorArcana = ['The Fool','The Magician','The High Priestess','The Empress','The Emperor','The Hierophant','The Lovers','The Chariot','Strength','The Hermit','Wheel of Fortune','Justice','The Hanged One','Death','Temperance','The Devil','The Tower','The Star','The Moon','The Sun','Judgement','The World'];
+const suits = ['Wands','Cups','Swords','Pentacles'];
+const ranks = ['Ace','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Page','Knight','Queen','King'];
+const allowedCards = new Set([...majorArcana, ...suits.flatMap((suit) => ranks.map((rank) => `${rank} of ${suit}`))]);
 
 const getEnv = (name) => process.env[name] || globalThis.Netlify?.env?.get?.(name);
 
