@@ -1,6 +1,9 @@
+const getEnv = (name) => process.env[name] || globalThis.Netlify?.env?.get?.(name);
+
 export default async (request) => {
   if (request.method !== 'POST') return Response.json({ error: 'Method not allowed.' }, { status: 405 });
-  if (!process.env.OPENAI_API_KEY) return Response.json({ error: 'The parlor is not connected yet.' }, { status: 503 });
+  const apiKey = getEnv('OPENAI_API_KEY');
+  if (!apiKey) return Response.json({ error: 'The parlor is not connected yet.' }, { status: 503 });
 
   try {
     const body = await request.json();
@@ -16,9 +19,9 @@ export default async (request) => {
     const prompt = `Session intention: ${intention || 'Open session'}\nPrevious exchange:\n${context || 'None'}\nNew question: ${question}`;
     const apiResponse = await fetch('https://api.openai.com/v1/responses', {
       method: 'POST',
-      headers: { 'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`, 'Content-Type': 'application/json' },
+      headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: process.env.OPENAI_MODEL || 'gpt-5-mini',
+        model: getEnv('OPENAI_MODEL') || 'gpt-5-mini',
         instructions: 'Generate one brief answer for a clearly fictional Ouija-style interactive story. Output only 1 to 8 plain words using letters, numbers, spaces, apostrophes, question marks, or periods. Be eerie, ambiguous, and responsive to the question, but never claim actual spirit contact or factual supernatural knowledge. Do not reinforce paranoia, delusions, stalking, curses, possession, threats, or certainty about another person\'s thoughts. Never give medical, legal, financial, self-harm, or dangerous instructions. If the question is high-stakes or fear-driven, answer with a grounding phrase such as SEEK CLARITY IN THE LIVING WORLD.',
         input: prompt,
         max_output_tokens: 50

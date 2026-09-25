@@ -1,8 +1,11 @@
 const allowedCards = new Set(['The Fool','The Magician','The High Priestess','The Empress','The Emperor','The Hierophant','The Lovers','The Chariot','Strength','The Hermit','Wheel of Fortune','Justice','The Hanged One','Death','Temperance','The Devil','The Tower','The Star','The Moon','The Sun','Judgement','The World']);
 
+const getEnv = (name) => process.env[name] || globalThis.Netlify?.env?.get?.(name);
+
 export default async (request) => {
   if (request.method !== 'POST') return Response.json({ error: 'Method not allowed.' }, { status: 405 });
-  if (!process.env.OPENAI_API_KEY) return Response.json({ error: 'The reading room is not connected yet.' }, { status: 503 });
+  const apiKey = getEnv('OPENAI_API_KEY');
+  if (!apiKey) return Response.json({ error: 'The reading room is not connected yet.' }, { status: 503 });
 
   try {
     const body = await request.json();
@@ -17,9 +20,9 @@ export default async (request) => {
     const prompt = `Visitor question: ${question || 'No question; give an open reading.'}\n\nCards drawn:\n${cardList}`;
     const apiResponse = await fetch('https://api.openai.com/v1/responses', {
       method: 'POST',
-      headers: { 'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`, 'Content-Type': 'application/json' },
+      headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: process.env.OPENAI_MODEL || 'gpt-5-mini',
+        model: getEnv('OPENAI_MODEL') || 'gpt-5-mini',
         instructions: 'You are the voice of Rogue Rose Tarot: perceptive, mysterious, compassionate, and grounded. Interpret only the supplied cards, positions, orientations, and question. Write a cohesive reading in 3 to 5 short paragraphs, around 250 to 400 words. Address the visitor as you. Be specific without claiming supernatural certainty. Never intensify paranoia, delusions, fear of spirits, or certainty about another person\'s private thoughts. Do not provide medical, legal, financial, or crisis directives. For high-stakes topics, gently frame the cards as reflection and encourage appropriate real-world support. Do not add headings, bullet points, markdown, or a disclaimer; the page already shows one.',
         input: prompt,
         max_output_tokens: 700
