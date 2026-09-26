@@ -375,3 +375,26 @@ select option { color:#1c1115; }
 .disclosure-dialog .button:disabled { cursor:not-allowed;opacity:.42; }
 .site-disclosures { grid-column:1/-1;max-width:920px;margin-top:1rem;padding-top:1.35rem;border-top:1px solid rgba(240,204,211,.14);color:#9f9296;font-size:.75rem;line-height:1.55; }
 .site-disclosures p { margin:.35rem 0; }
+
+/* Full-screen Ouija experience */
+.ouija-page { overflow-x:hidden; }
+.ouija-page .site-header { position:fixed;left:0;right:0; }
+.ouija-room { position:relative;width:100%;padding:76px 0 0; }
+.ouija-intro { position:absolute;top:clamp(7.5rem,13vw,10rem);left:clamp(1.2rem,6vw,6rem);z-index:5;max-width:660px;padding:1.2rem 1.4rem;background:linear-gradient(90deg,rgba(9,7,10,.82),rgba(9,7,10,.22),transparent);transition:opacity .5s,visibility .5s;pointer-events:none; }
+.ouija-intro h1 { max-width:650px;font-size:clamp(3.1rem,7vw,7rem);text-shadow:0 4px 25px rgba(0,0,0,.7); }
+.ouija-intro>p:last-child { color:#d0c1c5; }
+.session-active .ouija-intro { opacity:0;visibility:hidden; }
+.session-shell { min-height:calc(100svh - 76px); }
+.spirit-board { width:100%;height:calc(100svh - 76px);min-height:650px;border-left-width:clamp(5px,1vw,11px);border-right-width:clamp(5px,1vw,11px); }
+.session-console { position:absolute;left:50%;bottom:clamp(1rem,3vw,2.2rem);z-index:6;width:min(850px,calc(100% - 2rem));max-height:42vh;overflow:auto;margin:0;transform:translateX(-50%);border-color:rgba(227,154,168,.32);background:rgba(12,8,11,.88);box-shadow:0 20px 65px rgba(0,0,0,.55);backdrop-filter:blur(14px);transition:max-width .4s,background .4s; }
+.session-active .session-console { max-width:720px;background:rgba(12,8,11,.82); }
+.board-message { position:absolute;left:50%;bottom:17%;z-index:4;width:min(760px,82%);margin:0;transform:translateX(-50%);color:#3a1e19;text-align:center;text-shadow:0 1px rgba(255,235,202,.4);font:700 clamp(1.2rem,3.2vw,2.15rem)/1.2 var(--serif);letter-spacing:.08em;text-transform:uppercase; }
+.session-log { max-height:125px; }
+.ouija-disclaimer { position:absolute;right:1rem;bottom:.15rem;z-index:5;max-width:520px;margin:0;color:rgba(235,220,224,.62);text-align:right; }
+.ouija-page .site-footer { position:relative; }
+@media(max-width:650px){
+  .ouija-room{padding-top:76px}.spirit-board{height:calc(100svh - 76px);min-height:650px;padding-top:1rem}
+  .ouija-intro{top:6.7rem;left:.7rem;right:.7rem;padding:.9rem}.ouija-intro h1{font-size:clamp(2.8rem,13vw,4.8rem)}
+  .session-console{bottom:.75rem;width:calc(100% - 1rem);max-height:44vh}.board-message{bottom:22%;font-size:1.1rem}
+  .ouija-disclaimer{position:static;margin:1rem auto;text-align:center}
+}

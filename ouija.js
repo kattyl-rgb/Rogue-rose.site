@@ -5,6 +5,7 @@ const sessionLog = document.querySelector('#session-log');
 const status = document.querySelector('#session-status');
 const form = document.querySelector('#ouija-form');
 const askButton = document.querySelector('#ask-board');
+const boardMessage = document.querySelector('#board-message');
 let history = [];
 let sessionOpen = false;
 
@@ -33,7 +34,7 @@ function delay(ms) { return new Promise((resolve) => setTimeout(resolve, ms)); }
 async function moveTo(character) {
   const key = character === ' ' ? null : character.toUpperCase();
   const target = key ? document.querySelector(`[data-board-char="${CSS.escape(key)}"]`) : null;
-  if (!target) { await delay(240); return; }
+  if (!target) { await delay(110); return; }
   const board = document.querySelector('#spirit-board').getBoundingClientRect();
   const spot = target.getBoundingClientRect();
   const x = spot.left + spot.width / 2 - board.left;
@@ -41,18 +42,23 @@ async function moveTo(character) {
   planchette.style.left = `${x}px`;
   planchette.style.top = `${y}px`;
   target.classList.add('lit');
-  await delay(430 + Math.random() * 260);
+  await delay(165 + Math.random() * 125);
   target.classList.remove('lit');
 }
 
-async function spell(message) {
+async function spell(message, revealMessage = false) {
   planchette.classList.add('awake');
-  for (const character of message) await moveTo(character);
+  if (revealMessage) boardMessage.textContent = '';
+  for (const character of message) {
+    await moveTo(character);
+    if (revealMessage) boardMessage.textContent += character;
+  }
   planchette.classList.remove('awake');
 }
 
 document.querySelector('#begin-session').addEventListener('click', async () => {
   sessionOpen = true;
+  document.body.classList.add('session-active');
   document.querySelector('#session-start').hidden = true;
   document.querySelector('#session-live').hidden = false;
   status.textContent = 'The room settles around the board…';
@@ -85,7 +91,7 @@ form.addEventListener('submit', async (event) => {
     });
     const data = await response.json();
     if (!response.ok) throw new Error(data.error || 'The connection went quiet.');
-    await spell(data.message);
+    await spell(data.message, true);
     addLog('board', data.message);
     history.push({ question, answer: data.message });
     status.textContent = 'The planchette comes to rest.';
@@ -99,6 +105,7 @@ form.addEventListener('submit', async (event) => {
 
 document.querySelector('#end-session').addEventListener('click', async () => {
   sessionOpen = false;
+  document.body.classList.remove('session-active');
   askButton.disabled = true;
   status.textContent = 'Closing the circle…';
   await spell('GOODBYE');
