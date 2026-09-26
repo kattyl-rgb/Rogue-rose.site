@@ -398,3 +398,15 @@ select option { color:#1c1115; }
   .session-console{bottom:.75rem;width:calc(100% - 1rem);max-height:44vh}.board-message{bottom:22%;font-size:1.1rem}
   .ouija-disclaimer{position:static;margin:1rem auto;text-align:center}
 }
+
+/* Pre-session smoke veil: reveal the board only after Begin session */
+.pre-session-smoke { position:absolute;inset:0;z-index:4;overflow:hidden;background:radial-gradient(circle at 50% 48%,#171219 0,#080708 48%,#020202 100%);transition:opacity 1.2s ease,visibility 1.2s ease; }
+.pre-session-smoke::before,.pre-session-smoke::after,.pre-session-smoke i { content:"";position:absolute;width:70vw;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(96,82,94,.28),rgba(25,21,27,.18) 38%,transparent 70%);filter:blur(25px);opacity:.75;animation:smoke-drift 13s ease-in-out infinite alternate; }
+.pre-session-smoke::before { left:-22%;top:-30%; }
+.pre-session-smoke::after { right:-25%;bottom:-38%;animation-duration:17s;animation-direction:alternate-reverse; }
+.pre-session-smoke i:nth-child(1) { left:20%;top:12%;width:55vw;animation-duration:19s; }
+.pre-session-smoke i:nth-child(2) { right:5%;top:-12%;width:45vw;animation-duration:15s;animation-delay:-5s; }
+.pre-session-smoke i:nth-child(3) { left:5%;bottom:-25%;width:62vw;animation-duration:21s;animation-delay:-8s; }
+.session-active .pre-session-smoke { opacity:0;visibility:hidden;pointer-events:none; }
+@keyframes smoke-drift { from{transform:translate3d(-4%,-2%,0) scale(.94)} to{transform:translate3d(7%,5%,0) scale(1.12)} }
+@media(prefers-reduced-motion:reduce){.pre-session-smoke::before,.pre-session-smoke::after,.pre-session-smoke i{animation:none}}
