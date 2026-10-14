@@ -1,0 +1,98 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="index,follow">
+  <title>SMS Consent | Rogue Rose Creative LLC</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 24px;
+      background: #faf8f7;
+      color: #292323;
+      font-family: Georgia, serif;
+      line-height: 1.7;
+    }
+    main {
+      max-width: 680px;
+      margin: 36px auto;
+      padding: 28px;
+      background: #fff;
+      border: 1px solid #e3d8d8;
+      border-radius: 10px;
+    }
+    h1, h2 { color: #6e293e; }
+    label { display: block; margin: 16px 0 8px; }
+    input[type="tel"] {
+      box-sizing: border-box;
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #b9acad;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    .consent {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .consent input { margin-top: 7px; }
+    button {
+      padding: 12px 20px;
+      background: #6e293e;
+      color: white;
+      border: 0;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    .notice { font-size: 0.92rem; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Rogue Rose Creative LLC</h1>
+  <h2>SMS Service Message Consent</h2>
+
+  <p>
+    Choose whether you would like to receive service-related text
+    messages from Rogue Rose Creative LLC. Consent is optional and
+    is not a condition of purchasing goods or services.
+  </p>
+
+  <form>
+    <label for="phone">Mobile phone number</label>
+    <input id="phone" name="phone" type="tel"
+      autocomplete="tel" placeholder="Your mobile number">
+
+    <label class="consent">
+      <input type="checkbox" name="sms_consent" value="yes">
+      <span>
+        I agree to receive service-related text messages from
+        Rogue Rose Creative LLC, such as responses to my inquiries
+        and updates about services I request. Message frequency
+        varies. Message and data rates may apply. Reply STOP to
+        opt out or HELP for help. Consent is not a condition of
+        purchase. See the
+        <a href="/privacy-policy.html">Privacy Policy</a> and
+        <a href="/terms-of-service.html">Terms of Service</a>.
+        SMS consent and phone numbers will not be shared with
+        third parties or affiliates for their marketing purposes.
+      </span>
+    </label>
+
+    <p class="notice">
+      You may contact us directly if you do not wish to consent
+      to text messages.
+    </p>
+
+    <button type="button" disabled>
+      SMS enrollment temporarily unavailable
+    </button>
+  </form>
+
+  <p><a href="/">Return to website</a></p>
+</main>
+</body>
+</html>
