@@ -48,6 +48,8 @@
       font-size: 16px;
     }
     .notice { font-size: 0.92rem; }
+    button:disabled { opacity: 0.6; }
+    #sms-consent-status.error { color: #a1263a; }
   </style>
 </head>
 <body>
@@ -61,13 +63,13 @@
     is not a condition of purchasing goods or services.
   </p>
 
-  <form>
+  <form id="sms-consent-form" novalidate>
     <label for="phone">Mobile phone number</label>
     <input id="phone" name="phone" type="tel"
-      autocomplete="tel" placeholder="Your mobile number">
+      autocomplete="tel" placeholder="Your mobile number" required>
 
     <label class="consent">
-      <input type="checkbox" name="sms_consent" value="yes">
+      <input type="checkbox" name="sms_consent" value="yes" required>
       <span>
         I agree to receive service-related text messages from
         Rogue Rose Creative LLC, such as responses to my inquiries
@@ -75,8 +77,8 @@
         varies. Message and data rates may apply. Reply STOP to
         opt out or HELP for help. Consent is not a condition of
         purchase. See the
-        <a href="/privacy-policy.html">Privacy Policy</a> and
-        <a href="/terms-of-service.html">Terms of Service</a>.
+        <a href="/legal.html#privacy">Privacy Policy</a> and
+        <a href="/legal.html#sms">SMS Messaging Terms</a>.
         SMS consent and phone numbers will not be shared with
         third parties or affiliates for their marketing purposes.
       </span>
@@ -87,12 +89,57 @@
       to text messages.
     </p>
 
-    <button type="button" disabled>
-      SMS enrollment temporarily unavailable
-    </button>
+    <button type="submit" disabled>SMS enrollment temporarily unavailable</button>
+    <p id="sms-consent-status" class="notice" role="status" aria-live="polite"></p>
   </form>
 
   <p><a href="/">Return to website</a></p>
 </main>
+<script>
+  const consentForm = document.querySelector('#sms-consent-form');
+  const consentStatus = document.querySelector('#sms-consent-status');
+  const consentButton = consentForm.querySelector('button');
+  let enrollmentOpen = false;
+  fetch('/.netlify/functions/sms-consent')
+    .then((response) => response.ok ? response.json() : {})
+    .then((data) => {
+      if (data.enabled !== true) return;
+      enrollmentOpen = true;
+      consentButton.disabled = false;
+      consentButton.textContent = 'Enroll in SMS messages';
+    })
+    .catch(() => {});
+  consentForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!enrollmentOpen) return;
+    const button = consentButton;
+    const phone = consentForm.phone.value.trim();
+    const consent = consentForm.sms_consent.checked;
+    consentStatus.className = 'notice error';
+    if (!phone) { consentStatus.textContent = 'Please enter your mobile phone number.'; return; }
+    if (!consent) { consentStatus.textContent = 'Please check the consent box to enroll.'; return; }
+    button.disabled = true;
+    consentStatus.className = 'notice';
+    consentStatus.textContent = 'Saving your consent…';
+    try {
+      const response = await fetch('/.netlify/functions/sms-consent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone, consent })
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.error || 'Your consent could not be saved. Please try again.');
+      consentForm.reset();
+      consentStatus.textContent = data.alreadyEnrolled
+        ? 'This number is already enrolled. Reply STOP at any time to opt out.'
+        : 'Thank you. You are enrolled in service-related text messages. Reply STOP at any time to opt out.';
+    } catch (error) {
+      consentStatus.className = 'notice error';
+      consentStatus.textContent = error.message;
+    } finally {
+      button.disabled = false;
+    }
+  });
+</script>
 </body>
 </html>
