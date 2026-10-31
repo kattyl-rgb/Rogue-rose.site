@@ -30,7 +30,7 @@ create table if not exists public.tenants (
   unique (id, owner_id),
   constraint tenants_property_owner_fk
     foreign key (property_id, owner_id)
-    references public.properties(id, owner_id) on delete set null
+    references public.properties(id, owner_id) on delete restrict
 );
 
 create table if not exists public.transactions (
@@ -48,10 +48,10 @@ create table if not exists public.transactions (
   created_at timestamptz not null default now(),
   constraint transactions_property_owner_fk
     foreign key (property_id, owner_id)
-    references public.properties(id, owner_id) on delete set null,
+    references public.properties(id, owner_id) on delete restrict,
   constraint transactions_tenant_owner_fk
     foreign key (tenant_id, owner_id)
-    references public.tenants(id, owner_id) on delete set null
+    references public.tenants(id, owner_id) on delete restrict
 );
 
 create table if not exists public.maintenance (
@@ -68,7 +68,7 @@ create table if not exists public.maintenance (
   created_at timestamptz not null default now(),
   constraint maintenance_property_owner_fk
     foreign key (property_id, owner_id)
-    references public.properties(id, owner_id) on delete set null
+    references public.properties(id, owner_id) on delete restrict
 );
 
 create table if not exists public.workspace_settings (
